@@ -548,7 +548,8 @@ def unsloth_save_model(
     from collections import OrderedDict
     state_dict = OrderedDict()
 
-    torch_dtype = internal_model.config.torch_dtype
+    torch_dtype = internal_model.config.dtype if hasattr(internal_model.config, "dtype") \
+        else internal_model.config.torch_dtype
     if type(torch_dtype) is str:
         if   torch_dtype ==  "float16": torch_dtype = torch.float16
         elif torch_dtype == "bfloat16": torch_dtype = torch.bfloat16
@@ -1838,7 +1839,8 @@ def unsloth_save_pretrained_gguf(
     for _ in range(3):
         gc.collect()
 
-    model_dtype = self.config.torch_dtype
+    model_dtype = self.config.dtype if hasattr(self.config, "dtype") \
+        else self.config.torch_dtype
     model_type  = self.config.model_type
     if type(model_dtype) is str:
         assert(model_dtype == "float16" or model_dtype == "bfloat16")
@@ -2016,7 +2018,8 @@ def unsloth_push_to_hub_gguf(
     for _ in range(3):
         gc.collect()
 
-    model_dtype = self.config.torch_dtype
+    model_dtype = self.config.dtype if hasattr(self.config, "dtype") \
+        else self.config.torch_dtype
     model_type  = self.config.model_type
     if type(model_dtype) is str:
         assert(model_dtype == "float16" or model_dtype == "bfloat16")
